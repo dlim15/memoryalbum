@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_select_album"
+    android:minWidth="200dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.example.dv.myalbum.SelectAlbumActivity"
+    android:orientation="vertical">
+    <ScrollView android:layout_width="wrap_content"
+        android:minWidth="200dp"
+        android:layout_height="200dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:paddingRight="10dp"
+            android:id="@+id/rdoGrpSelect"
+            android:orientation="vertical">
+
+        </RadioGroup>
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_marginRight="10dp"
+            android:textSize="20dp"
+            android:id="@+id/btnSelectBack"
+            android:background="#D2B48C"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Select"
+            android:textSize="20dp"
+            android:id="@+id/btnSelectSelect"
+            android:background="#D2B48C"/>
+    </LinearLayout>
+</LinearLayout>
+
+
