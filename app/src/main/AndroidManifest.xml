@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
     package="com.example.dv.myalbum">
 
     <uses-feature android:name="android.hardware.camera2" />
@@ -14,20 +15,25 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateNewActivity" />
-        <activity android:name=".AlbumActivity" />
+        <activity android:name=".CreateNewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AlbumActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SelectAlbumActivity"
             android:label="Choose Album"
-            android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".DetailedImageActivity"></activity>
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DetailedImageActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

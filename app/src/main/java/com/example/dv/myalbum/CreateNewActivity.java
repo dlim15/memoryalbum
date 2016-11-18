@@ -44,7 +44,6 @@ public class CreateNewActivity extends AppCompatActivity {
         btns.btnNewCancelClicked((Button)findViewById(R.id.btnCreateNewCancel));
         btns.btnNewSubmitClicked((Button)findViewById(R.id.btnCreateNewSubmit),date, database);
         btns.btnSelectDateClicked(btnSelectDate, date);
-        database.selectAllAlbum();
     }
 
 
