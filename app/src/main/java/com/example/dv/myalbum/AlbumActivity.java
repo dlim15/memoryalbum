@@ -34,14 +34,12 @@ public class AlbumActivity extends AppCompatActivity {
     private Spinner spinnerDate;
     private DateRelated date;
     private DatabaseDb database;
-    private SQLiteDatabase db;
     private DatabaseHelper helper;
     private Button btnFromGallery;
     private String[] path;
     private ArrayList<Bitmap> fileList;
     private ArrayList<String> filePath;
     private GridAdapter imageAdapter;
-    private final static int THUMB_SIZE = 150;
     private ExecutorService executor;
     private List<imgCallable> imgs;
     private ArrayList<Integer> changedDays;
@@ -50,8 +48,6 @@ public class AlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         init();
-        Toast.makeText(getApplicationContext(), "Album No : " + albumNum, Toast.LENGTH_LONG).show();
-
     }
 
     @Override
@@ -82,7 +78,6 @@ public class AlbumActivity extends AppCompatActivity {
         Intent intent = getIntent();
         btnFromGallery = (Button)findViewById(R.id.btnFromGallery);
         helper = DatabaseHelper.getsInstance(getApplicationContext());
-        db = helper.getWritableDatabase();
         database = new DatabaseDb(helper.getWritableDatabase());
         sqs = new SQLStatements();
         date = new DateRelated(this);

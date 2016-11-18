@@ -3,6 +3,8 @@ package com.example.dv.myalbum;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -10,11 +12,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -25,6 +25,7 @@ import java.util.Map;
 public class DetailedImageActivity extends AppCompatActivity {
     private ImageView imgDetail;
     private ArrayList<String> fileList;
+    private ArrayList<Uri> uriList;
     private ArrayList<Bitmap> fileInBit;
     private int curPos;
     private int maxPos;
@@ -33,6 +34,7 @@ public class DetailedImageActivity extends AppCompatActivity {
     private Map<Integer, Integer> orientationInfo;
     private int width,height;
     private float sX,sY,eX,eY;
+    private boolean isDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,10 @@ public class DetailedImageActivity extends AppCompatActivity {
         init();
         getScreenWidthAndHeight();
         getList();
+        setUriList();
         setImg();
+//        rotateCheck();
+
     }
     private void getScreenWidthAndHeight(){
         Point size = new Point();
@@ -52,7 +57,8 @@ public class DetailedImageActivity extends AppCompatActivity {
     }
     private void init(){
         vars = new SomeGlobalVar();
-        fileInBit = new ArrayList<Bitmap>();
+        uriList = new ArrayList<Uri>();
+        fileInBit = new ArrayList<>();
         orientationInfo = new HashMap<>();
         orientationInfo.put(0, 0);
         orientationInfo.put(ExifInterface.ORIENTATION_NORMAL, 0);
@@ -73,8 +79,46 @@ public class DetailedImageActivity extends AppCompatActivity {
         rotate = 0;
         checkImageRotateInfo();
 //        imgDetail.setRotation(rotate);
-        imgDetail.setImageURI(Uri.parse(fileList.get(curPos)));
+//        if(isDone)
+//            imgDetail.setImageBitmap(fileInBit.get(curPos));
+//        else
+            imgDetail.setImageURI(uriList.get(curPos));
 
+    }
+//    private void rotateCheck(){
+//
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                int i;
+//                for(i=0; i<fileList.size(); i++){
+//                    ExifInterface exif = null;
+//                    try {
+//                        exif = new ExifInterface(
+//                                fileList.get(i));
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    orientationInfo.get(exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL));
+//                    Bitmap b = BitmapFactory.decodeFile(fileList.get(i));
+//                    b = Bitmap.createScaledBitmap(b,width,height,true);
+//
+//                    Matrix matrix = new Matrix();
+//                    matrix.postRotate(orientationInfo.get(exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL)));
+//
+//                    fileInBit.add(Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),matrix,true));
+//
+//                }
+//                isDone = true;
+//            }
+//        };
+//        Thread a = new Thread(runnable);
+//        a.start();
+//    }
+    private void setUriList(){
+        for(String u:fileList){
+            uriList.add(Uri.parse(u));
+        }
     }
     private void checkImageRotateInfo(){
 
@@ -107,23 +151,19 @@ public class DetailedImageActivity extends AppCompatActivity {
             public boolean onDrag(View view, DragEvent dragEvent) {
                 switch(dragEvent.getAction()){
                     case DragEvent.ACTION_DRAG_STARTED:
-                        Log.d("Started","Start");
                         break;
                     case DragEvent.ACTION_DRAG_ENTERED:
                         sX = dragEvent.getX();
                         sY = dragEvent.getY();
-                        Log.d("sX",sX+":"+sY);
                         break;
                     case DragEvent.ACTION_DRAG_EXITED:
                         eX = dragEvent.getX();
                         eY = dragEvent.getY();
-                        Log.d("eX",eX+"");
                         picSlideCheck(sX,eX);
                         break;
                     case DragEvent.ACTION_DROP:
                         eX = dragEvent.getX();
                         eY = dragEvent.getY();
-                        Log.d("eX",eX+":"+eY);
                         picSlideCheck(sX,eX);
                         break;
 
@@ -133,11 +173,12 @@ public class DetailedImageActivity extends AppCompatActivity {
         });
     }
     private void picSlideCheck(float s, float e){
-        if(s-e <  0){
-            moveToNextPic();
-        }else if(s-e > 0){
+        float result = s-e;
+        if(result <  0)
             moveToPrePic();
-        }
+        else if(result > 0)
+            moveToNextPic();
+
     }
     private void moveToNextPic(){
         if(curPos<fileList.size()-1){
